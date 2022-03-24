@@ -35,7 +35,7 @@ export const Game = () => {
     if (!Object.keys(game)) return <>Error</>
 
 
-    const { gemStack, goldStack, players } = game
+    const { gemStack, goldStack, playerTrnIdx, players } = game
 
     return (
         <>
@@ -43,11 +43,15 @@ export const Game = () => {
             <StackCoin gemStack={gemStack} goldStack={goldStack} />
 
             <b>Players</b>:
-            {players.map(player => {
+            {players.map((player, idx) => {
                 const { status: { ownGemFluid, ownGemFixed, ownGold } } = player
                 return (
                     <div key={player.miniUser.playerId}>
-                        <div><b>{player.miniUser.displayName}</b>:</div>
+                        <div>
+                            {idx === playerTrnIdx ? '(Turn)' : ''}
+                            {player.isActive ? '(Active)' : ''}
+                            <b>{player.miniUser.displayName}</b>:
+                        </div>
                         <PlayerCoin
                             gemFluid={ownGemFluid}
                             gemFixed={ownGemFixed}
