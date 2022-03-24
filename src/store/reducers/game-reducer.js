@@ -1,3 +1,5 @@
+import { gameService } from "../../services/gameService"
+
 const initialState = {
     game: {}
 }
@@ -22,6 +24,9 @@ export function gameReducer(state = initialState, action) {
 
             return { ...state, game: gameCopy }
 
+        case 'SET_NEXT_PLAYER_IDX':
+            const nextPlayerTrnIdx = gameService.getNextActivePlayerIdx(state.game.players, state.game.playerTrnIdx)
+            return { ...state, game: { ...state.game, playerTrnIdx: nextPlayerTrnIdx } }
 
         default: return state
     }

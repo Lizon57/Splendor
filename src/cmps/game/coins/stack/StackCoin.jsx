@@ -87,6 +87,7 @@ export const StackCoin = ({ gemStack, goldStack }) => {
     // Update store and clean states
     const onApprovePick = async () => {
         dispatch({ type: 'SET_PLAYER_COIN', payload: pickCoin })
+        dispatch({ type: 'SET_NEXT_PLAYER_IDX' })
         await Promise.all([
             setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 }),
             setPickCoinCount(0)
