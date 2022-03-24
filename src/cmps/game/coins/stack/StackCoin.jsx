@@ -4,15 +4,16 @@ import { useDispatch } from 'react-redux'
 import { PickCoin } from './PickCoin'
 
 
-export const StackCoin = ({ gemStack, goldStack, playerTrnIdx }) => {
+export const StackCoin = ({ gemStack, goldStack }) => {
     const { emerald, sapphire, ruby, diamond, onyx } = gemStack
     const [coinStack, setCoinStack] = useState({ emerald, sapphire, ruby, diamond, onyx, gold: goldStack })
     const [pickCoin, setPickCoin] = useState({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 })
-    const [pickCoinCounter, setPickCoinCounter] = useState(0)
+    const [pickCoinCount, setPickCoinCount] = useState(0)
 
     const dispatch = useDispatch()
 
 
+    // Update all states
     const updatePick = async (coin, isIncrease) => {
         const stackDiff = isIncrease ? -1 : 1
         const pickDiff = isIncrease ? 1 : -1
@@ -20,7 +21,7 @@ export const StackCoin = ({ gemStack, goldStack, playerTrnIdx }) => {
         await Promise.all([
             setCoinStack({ ...coinStack, [coin]: coinStack[coin] + stackDiff }),
             setPickCoin({ ...pickCoin, [coin]: pickCoin[coin] + pickDiff }),
-            setPickCoinCounter(pickCoinCounter + pickDiff)
+            setPickCoinCount(pickCoinCount + pickDiff)
         ])
     }
 
@@ -36,7 +37,7 @@ export const StackCoin = ({ gemStack, goldStack, playerTrnIdx }) => {
         if (pickCoin[gem] >= 2) return
 
         // If player pick two different gems and try picking second of one of them - return gem to stack
-        if (pickCoinCounter === 2 && pickCoin[gem]) return
+        if (pickCoinCount === 2 && pickCoin[gem]) return
 
         // If Player already pick 3 gem - return
         const pickedGem = { ...pickCoin }
@@ -63,27 +64,33 @@ export const StackCoin = ({ gemStack, goldStack, playerTrnIdx }) => {
         if (!coinStack.gold) return
 
         // If player already picked a gem - return
-        if (pickCoinCounter && !pickCoin.gold) return
+        if (pickCoinCount && !pickCoin.gold) return
 
         // If player already picked gold - return it to coin stack
-        if (pickCoinCounter && pickCoin.gold) updatePick('gold', false)
+        if (pickCoinCount && pickCoin.gold) updatePick('gold', false)
 
         // Can pick gold
         else updatePick('gold', true)
     }
 
 
+    // Clear all states
     const onClearPick = async () => {
-        Promise.all([
+        await Promise.all([
             setCoinStack({ emerald, sapphire, ruby, diamond, onyx, gold: goldStack }),
             setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 }),
-            setPickCoinCounter(0)
+            setPickCoinCount(0)
         ])
     }
 
 
+    // Update store and clean states
     const onApprovePick = async () => {
-        dispatch({ type: 'SET_AFTER_PICK_COIN_STACK', payload: coinStack })
+        dispatch({ type: 'SET_PLAYER_COIN', payload: pickCoin })
+        await Promise.all([
+            setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 }),
+            setPickCoinCount(0)
+        ])
     }
 
 
@@ -96,7 +103,7 @@ export const StackCoin = ({ gemStack, goldStack, playerTrnIdx }) => {
             <div onClick={() => onPickGem('onyx')}>Onyx: {coinStack.onyx}</div>
             <div onClick={onPickGold}>Gold: {coinStack.gold}</div>
 
-            {pickCoinCounter > 0 && (
+            {pickCoinCount > 0 && (
                 <>
                     <PickCoin pickCoin={pickCoin} updatePick={updatePick} />
                     <div>

@@ -3,5 +3,5 @@ import { Game } from "./pages/Game"
 
 export const routes = [
     { path: '/', element: Main },
-    { path: '/game', element: Game }
+    { path: '/game/:id', element: Game }
 ]
