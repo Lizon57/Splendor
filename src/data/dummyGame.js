@@ -21,7 +21,7 @@ export const dummyGame = {
         }
     },
 
-    gemStack: { emerald: 4, sapphire: 4, ruby: 4, diamond: 4, onyx: 4 },
+    gemStack: { emerald: 5, sapphire: 3, ruby: 4, diamond: 4, onyx: 4 },
     goldStack: 5,
 
     players: [

@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /src/hooks
+todos.txt
 
 # testing
 /coverage
