@@ -1,7 +1,7 @@
 import { Main } from "./pages/Main"
-import { OnlineGame } from "./pages/OnlineGame"
+import { Game } from "./pages/Game"
 
 export const routes = [
     { path: '/', element: Main },
-    { path: '/online-game', element: OnlineGame }
+    { path: '/game', element: Game }
 ]

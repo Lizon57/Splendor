@@ -1,6 +1,6 @@
 import { utilService } from "../services/utilService"
 
-import { devCards as devCardDB } from "./devCardDB"
+import { devCardDB } from "./devCardDB"
 import { nobleCardDB } from "./nobleCardDB"
 
 
@@ -21,7 +21,8 @@ export const dummyGame = {
         }
     },
 
-    coinStack: { emerald: 4, sapphire: 4, ruby: 4, diamond: 4, onyx: 4, gold: 5 },
+    gemStack: { emerald: 4, sapphire: 4, ruby: 4, diamond: 4, onyx: 4 },
+    goldStack: 5,
 
     players: [
         {
@@ -35,7 +36,9 @@ export const dummyGame = {
             point: 0,
 
             status: {
-                ownCoin: { emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 },
+                ownGemFluid: { emerald: 1, sapphire: 0, ruby: 3, diamond: 0, onyx: 5 },
+                ownGemFixed: { emerald: 0, sapphire: 2, ruby: 0, diamond: 4, onyx: 0 },
+                ownGold: 2,
                 ownCard: {
                     firstLevelCards: [],
                     secondLevelCards: [],
@@ -57,7 +60,9 @@ export const dummyGame = {
             point: 0,
 
             status: {
-                ownCoin: { emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 },
+                ownGemFluid: { emerald: 0, sapphire: 4, ruby: 0, diamond: 2, onyx: 0 },
+                ownGemFixed: { emerald: 5, sapphire: 0, ruby: 3, diamond: 0, onyx: 1 },
+                ownGold: 0,
                 ownCard: {
                     firstLevelCards: [],
                     secondLevelCards: [],
