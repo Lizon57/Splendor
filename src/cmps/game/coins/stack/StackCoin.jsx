@@ -1,13 +1,16 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 
 import { PickCoin } from './PickCoin'
 
 
-export const StackCoin = ({ gemStack, goldStack }) => {
+export const StackCoin = ({ gemStack, goldStack, playerTrnIdx }) => {
     const { emerald, sapphire, ruby, diamond, onyx } = gemStack
     const [coinStack, setCoinStack] = useState({ emerald, sapphire, ruby, diamond, onyx, gold: goldStack })
     const [pickCoin, setPickCoin] = useState({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 })
     const [pickCoinCounter, setPickCoinCounter] = useState(0)
+
+    const dispatch = useDispatch()
 
 
     const updatePick = async (coin, isIncrease) => {
@@ -79,6 +82,11 @@ export const StackCoin = ({ gemStack, goldStack }) => {
     }
 
 
+    const onApprovePick = async () => {
+        dispatch({ type: 'SET_AFTER_PICK_COIN_STACK', payload: coinStack })
+    }
+
+
     return (
         <>
             <div onClick={() => onPickGem('emerald')}>Emerald: {coinStack.emerald}</div>
@@ -92,7 +100,7 @@ export const StackCoin = ({ gemStack, goldStack }) => {
                 <>
                     <PickCoin pickCoin={pickCoin} updatePick={updatePick} />
                     <div>
-                        <button>Approve</button>
+                        <button onClick={onApprovePick}>Approve</button>
                         <button onClick={onClearPick}>Cancel</button>
                     </div>
                 </>
