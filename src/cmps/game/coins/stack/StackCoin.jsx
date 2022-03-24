@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { PickCoin } from './PickCoin'
@@ -9,21 +9,48 @@ export const StackCoin = ({ gemStack, goldStack }) => {
     const [coinStack, setCoinStack] = useState({ emerald, sapphire, ruby, diamond, onyx, gold: goldStack })
     const [pickCoin, setPickCoin] = useState({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 })
     const [pickCoinCount, setPickCoinCount] = useState(0)
+    const [isPickAble, setIsPickAble] = useState(false)
 
     const dispatch = useDispatch()
 
 
     // Update all states
-    const updatePick = async (coin, isIncrease) => {
+    const updatePick = (coin, isIncrease) => {
         const stackDiff = isIncrease ? -1 : 1
         const pickDiff = isIncrease ? 1 : -1
 
-        await Promise.all([
-            setCoinStack({ ...coinStack, [coin]: coinStack[coin] + stackDiff }),
-            setPickCoin({ ...pickCoin, [coin]: pickCoin[coin] + pickDiff }),
-            setPickCoinCount(pickCoinCount + pickDiff)
-        ])
+        setCoinStack({ ...coinStack, [coin]: coinStack[coin] + stackDiff })
+        setPickCoin({ ...pickCoin, [coin]: pickCoin[coin] + pickDiff })
+        setPickCoinCount(pickCoinCount + pickDiff)
     }
+
+    // Check if player completed pick coin (each pick change cause check)
+    const checkIfPickAble = () => {
+        // If player picked gold - enable pick coin
+        if (pickCoin.gold) {
+            setIsPickAble(true)
+            return
+        }
+
+        // If player picked two gem of the same type - enable pick coin
+        for (const gem in pickCoin) {
+            if (pickCoin[gem] === 2) {
+                setIsPickAble(true)
+                return
+            }
+        }
+
+        // If player picked totally three gems
+        const pickedGemCount = Object.values(pickCoin).reduce((a, b) => a + b)
+        if (pickedGemCount === 3) {
+            setIsPickAble(true)
+            return
+        }
+
+        // If got here - not pickable yet
+        if (isPickAble) setIsPickAble(false)
+    }
+    useEffect(checkIfPickAble, [pickCoinCount])
 
 
     const onPickGem = gem => {
@@ -75,23 +102,20 @@ export const StackCoin = ({ gemStack, goldStack }) => {
 
 
     // Clear all states
-    const onClearPick = async () => {
-        await Promise.all([
-            setCoinStack({ emerald, sapphire, ruby, diamond, onyx, gold: goldStack }),
-            setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 }),
-            setPickCoinCount(0)
-        ])
+    const onClearPick = () => {
+        setCoinStack({ emerald, sapphire, ruby, diamond, onyx, gold: goldStack })
+        setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 })
+        setPickCoinCount(0)
     }
 
 
     // Update store and clean states
-    const onApprovePick = async () => {
+    const onApprovePick = () => {
         dispatch({ type: 'SET_PLAYER_COIN', payload: pickCoin })
         dispatch({ type: 'SET_NEXT_PLAYER_IDX' })
-        await Promise.all([
-            setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 }),
-            setPickCoinCount(0)
-        ])
+
+        setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 })
+        setPickCoinCount(0)
     }
 
 
@@ -104,15 +128,15 @@ export const StackCoin = ({ gemStack, goldStack }) => {
             <div onClick={() => onPickGem('onyx')}>Onyx: {coinStack.onyx}</div>
             <div onClick={onPickGold}>Gold: {coinStack.gold}</div>
 
-            {pickCoinCount > 0 && (
-                <>
-                    <PickCoin pickCoin={pickCoin} updatePick={updatePick} />
-                    <div>
-                        <button onClick={onApprovePick}>Approve</button>
-                        <button onClick={onClearPick}>Cancel</button>
-                    </div>
-                </>
-            )}
+            {/* {pickCoinCount > 0 && ( */}
+            <>
+                <PickCoin pickCoin={pickCoin} updatePick={updatePick} />
+                <div>
+                    <button onClick={onApprovePick} className={isPickAble ? 'active' : 'hidden'}>Approve</button>
+                    <button onClick={onClearPick}>Cancel</button>
+                </div>
+            </>
+            {/* )} */}
         </>
     )
 }
