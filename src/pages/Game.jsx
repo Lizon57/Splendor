@@ -1,7 +1,7 @@
 import { dummyGame } from "../data/dummyGame"
 
-import { StackCoin } from "../cmps/game/coins/StackCoin"
-import { PlayerCoin } from "../cmps/game/coins/Player/PlayerCoin"
+import { StackCoin } from "../cmps/game/coins/stack/StackCoin"
+import { PlayerCoin } from "../cmps/game/coins/player/PlayerCoin"
 
 
 export const Game = () => {
