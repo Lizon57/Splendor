@@ -35,12 +35,12 @@ export const Game = () => {
     if (!Object.keys(game)) return <>Error</>
 
 
-    const { gemStack, goldStack, playerTrnIdx, players } = game
+    const { coinStack: {gem, gold}, playerTrnIdx, players } = game
 
     return (
         <>
             <b>Stack</b>:
-            <StackCoin gemStack={gemStack} goldStack={goldStack} />
+            <StackCoin gemStack={gem} goldStack={gold} />
 
             <b>Players</b>:
             {players.map((player, idx) => {

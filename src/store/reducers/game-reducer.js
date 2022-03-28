@@ -13,7 +13,7 @@ export function gameReducer(state = initialState, action) {
 
         case 'SET_PLAYER_COIN':
             const gameCopy = JSON.parse(JSON.stringify(state.game))
-            const { playerTrnIdx } = gameCopy
+            const { playerTrnIdx } = gameCopy.trnStatus
             let { ownGemFluid } = gameCopy.players[playerTrnIdx].status
 
             if (action.payload.gold) gameCopy.players[playerTrnIdx].status.ownGold += action.payload.gold
@@ -21,6 +21,8 @@ export function gameReducer(state = initialState, action) {
                 const gems = Object.keys(ownGemFluid)
                 gems.forEach(gem => ownGemFluid[gem] += action.payload[gem])
             }
+
+            gameCopy.trnStatus.phase = 1
 
             return { ...state, game: gameCopy }
 

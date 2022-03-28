@@ -112,7 +112,7 @@ export const StackCoin = ({ gemStack, goldStack }) => {
     // Update store and clean states
     const onApprovePick = () => {
         dispatch({ type: 'SET_PLAYER_COIN', payload: pickCoin })
-        dispatch({ type: 'SET_NEXT_PLAYER_IDX' })
+        // dispatch({ type: 'SET_NEXT_PLAYER_IDX' })
 
         setPickCoin({ emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0, gold: 0 })
         setPickCoinCount(0)
@@ -128,15 +128,15 @@ export const StackCoin = ({ gemStack, goldStack }) => {
             <div onClick={() => onPickGem('onyx')}>Onyx: {coinStack.onyx}</div>
             <div onClick={onPickGold}>Gold: {coinStack.gold}</div>
 
-            {/* {pickCoinCount > 0 && ( */}
-            <>
-                <PickCoin pickCoin={pickCoin} updatePick={updatePick} />
-                <div>
-                    <button onClick={onApprovePick} className={isPickAble ? 'active' : 'hidden'}>Approve</button>
-                    <button onClick={onClearPick}>Cancel</button>
-                </div>
-            </>
-            {/* )} */}
+            {pickCoinCount > 0 && (
+                <>
+                    <PickCoin pickCoin={pickCoin} updatePick={updatePick} />
+                    <div>
+                        <button onClick={onApprovePick} className={isPickAble ? 'active' : 'hidden'}>Approve</button>
+                        <button onClick={onClearPick}>Cancel</button>
+                    </div>
+                </>
+            )}
         </>
     )
 }
