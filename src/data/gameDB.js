@@ -22,7 +22,7 @@ export const gameDB = [
         },
 
         coinStack: {
-            gem: { emerald: 4, sapphire: 4, ruby: 4, diamond: 4, onyx: 4 },
+            gem: { emerald: 2, sapphire: 4, ruby: 4, diamond: 4, onyx: 4 },
             gold: 5,
         },
 

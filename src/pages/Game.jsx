@@ -9,10 +9,11 @@ import { PlayerCoin } from "../cmps/game/coins/player/PlayerCoin"
 
 
 export const Game = () => {
+    const [loadingState, setLoadingState] = useState({ isLoading: true, err: '' })
+
     const { id } = useParams()
     const dispatch = useDispatch()
     const { game } = useSelector(state => state.gameModule)
-    const [loadingState, setLoadingState] = useState({ isLoading: true, err: '' })
 
 
     const getGame = async () => {
@@ -35,7 +36,7 @@ export const Game = () => {
     if (!Object.keys(game)) return <>Error</>
 
 
-    const { coinStack: {gem, gold}, playerTrnIdx, players } = game
+    const { coinStack: { gem, gold }, playerTrnIdx, players } = game
 
     return (
         <>

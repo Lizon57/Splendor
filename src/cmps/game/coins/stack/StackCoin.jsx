@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { PickCoin } from './PickCoin'
 
@@ -11,6 +11,7 @@ export const StackCoin = ({ gemStack, goldStack }) => {
     const [pickCoinCount, setPickCoinCount] = useState(0)
     const [isPickAble, setIsPickAble] = useState(false)
 
+    const { game } = useSelector(state => state.gameModule)
     const dispatch = useDispatch()
 
 
@@ -26,6 +27,7 @@ export const StackCoin = ({ gemStack, goldStack }) => {
 
     // Check if player completed pick coin (each pick change cause check)
     const checkIfPickAble = () => {
+
         // If player picked gold - enable pick coin
         if (pickCoin.gold) {
             setIsPickAble(true)
@@ -54,32 +56,22 @@ export const StackCoin = ({ gemStack, goldStack }) => {
 
 
     const onPickGem = gem => {
-        // If player already picked gold - return
-        if (pickCoin.gold) return
-
-        // If player pick unavailable gem - return
-        if (!coinStack[gem]) return
-
-        // If player pick three same gem - return
-        if (pickCoin[gem] >= 2) return
-
-        // If player pick two different gems and try picking second of one of them - return gem to stack
-        if (pickCoinCount === 2 && pickCoin[gem]) return
-
-        // If Player already pick 3 gem - return
-        const pickedGem = { ...pickCoin }
-        delete pickedGem.gold
-        const pickedGemCount = Object.values(pickedGem).reduce((a, b) => a + b)
-        if (pickedGemCount >= 3) return
-
-        // If player pick second same gem when there are less then 3 available - return gem to stack
-        if (pickCoin[gem] && (coinStack[gem] < 3)) {
-            updatePick(gem, false)
-            return
-        }
-
-        // If player can't pick two same gem (less than 3 available) and already picked one - return gem to stack
-        if ([pickCoin[gem] === 1 && coinStack[gem] < 3]) updatePick(gem, false)
+        // Avoid picking gem if:
+        // - Game trn phase is 1 (picking card)
+        // - Player already picked gold
+        // - Player pick unavailable gem
+        // - Player pick three same gem
+        // - Player pick two different gems and try picking second of one of them
+        // - Player pick second same gem when there are less then 3 available
+        // - Player already pick 3 gem
+        if ((game.trnStatus.phase !== 0) ||
+            (pickCoin.gold) ||
+            (!coinStack[gem]) ||
+            (pickCoin[gem] >= 2) ||
+            (pickCoinCount === 2 && pickCoin[gem]) ||
+            (pickCoin[gem] && (coinStack[gem] < 3)) ||
+            (pickCoinCount >= 3)
+        ) return
 
         // Can pick gem
         updatePick(gem, true)
@@ -87,14 +79,16 @@ export const StackCoin = ({ gemStack, goldStack }) => {
 
 
     const onPickGold = () => {
-        // If no gold on stack - return
-        if (!coinStack.gold) return
-
-        // If player already picked a gem - return
-        if (pickCoinCount && !pickCoin.gold) return
-
-        // If player already picked gold - return it to coin stack
-        if (pickCoinCount && pickCoin.gold) updatePick('gold', false)
+        // Avoid picking gem if:
+        // - Gme trn phase is 1 (Picking card)
+        // - There is no gold on stack
+        // - Player already picked a gem
+        // - Player already picked gold
+        if ((game.trnStatus.phase !== 0) ||
+            (!coinStack.gold) ||
+            (pickCoinCount && !pickCoin.gold) ||
+            (pickCoinCount && pickCoin.gold)
+        ) return
 
         // Can pick gold
         else updatePick('gold', true)
