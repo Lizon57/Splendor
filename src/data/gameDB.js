@@ -116,8 +116,8 @@ export const gameDB = [
                 point: 0,
 
                 status: {
-                    ownGemFluid: { emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0 },
-                    ownGemFixed: { emerald: 0, sapphire: 0, ruby: 0, diamond: 0, onyx: 0 },
+                    ownGemFluid: { emerald: 2, sapphire: 0, ruby: 3, diamond: 2, onyx: 0 },
+                    ownGemFixed: { emerald: 1, sapphire: 1, ruby: 1, diamond: 0, onyx: 0 },
                     ownGold: 2,
                     ownCard: {
                         firstLevelCards: [],
