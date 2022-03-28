@@ -12,8 +12,79 @@ export const gameDB = [
 
         card: {
             dev: {
-                stack: devCardDB,
-                shownCards: []
+                stack: {
+                    firstLevelCards: devCardDB.firstLevel.slice(3),
+                    secondLevelCards: devCardDB.secondLevel.slice(3),
+                    thirdLevelCards: devCardDB.thirdLevel.slice(3),
+                },
+                shown: {
+                    firstLevelCards: [
+                        {
+                            point: 0,
+                            gem: 'onyx',
+                            cost: { emerald: 0, sapphire: 2, ruby: 1, diamond: 2, onyx: 0 }
+                        },
+                        {
+                            point: 0,
+                            gem: 'ruby',
+                            cost: { emerald: 1, sapphire: 1, ruby: 0, diamond: 1, onyx: 1 }
+                        },
+                        {
+                            point: 0,
+                            gem: 'emerald',
+                            cost: { emerald: 0, sapphire: 1, ruby: 2, diamond: 0, onyx: 2 }
+                        },
+                        {
+                            point: 0,
+                            gem: 'onyx',
+                            cost: { emerald: 3, sapphire: 0, ruby: 0, diamond: 0, onyx: 0 }
+                        }
+                    ],
+                    secondLevelCards: [
+                        {
+                            point: 2,
+                            gem: 'emerald',
+                            cost: { emerald: 0, sapphire: 2, ruby: 0, diamond: 4, onyx: 1 }
+                        },
+                        {
+                            point: 3,
+                            gem: 'diamond',
+                            cost: { emerald: 0, sapphire: 0, ruby: 0, diamond: 6, onyx: 0 }
+                        },
+                        {
+                            point: 2,
+                            gem: 'emerald',
+                            cost: { emerald: 0, sapphire: 5, ruby: 0, diamond: 3, onyx: 0 }
+                        },
+                        {
+                            point: 2,
+                            gem: 'diamond',
+                            cost: { emerald: 1, sapphire: 0, ruby: 4, diamond: 0, onyx: 2 }
+                        }
+                    ],
+                    thirdLevelCards: [
+                        {
+                            point: 5,
+                            gem: 'ruby',
+                            cost: { emerald: 7, sapphire: 0, ruby: 3, diamond: 0, onyx: 0 }
+                        },
+                        {
+                            point: 3,
+                            gem: 'onyx',
+                            cost: { emerald: 5, sapphire: 3, ruby: 3, diamond: 3, onyx: 0 }
+                        },
+                        {
+                            point: 4,
+                            gem: 'ruby',
+                            cost: { emerald: 7, sapphire: 0, ruby: 0, diamond: 0, onyx: 0 }
+                        },
+                        {
+                            point: 3,
+                            gem: 'diamond',
+                            cost: { emerald: 3, sapphire: 3, ruby: 5, diamond: 0, onyx: 3 }
+                        }
+                    ],
+                }
             },
             noble: {
                 stack: nobleCardDB,
@@ -29,7 +100,7 @@ export const gameDB = [
         trnStatus: {
             isGameOn: true,
             playerTrnIdx: 0,
-            phase: 0
+            phase: 1
         },
 
         players: [
